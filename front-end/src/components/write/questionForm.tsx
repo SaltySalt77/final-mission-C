@@ -17,6 +17,7 @@ import axios from "axios";
 import { ErrorType } from "@/types/error";
 import BasicModal from "../common/BasicModal";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Button = styled.button`
   display: block;
@@ -55,7 +56,6 @@ const QuestionForm: React.FC = (props) => {
     register,
     handleSubmit,
     resetField,
-    watch,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<FormValue>({ defaultValues: initialValues });
 
@@ -88,6 +88,8 @@ const QuestionForm: React.FC = (props) => {
           resetField("password");
           setSelected("");
           setTouched(false);
+          const route = useRouter();
+          route.push("/");
           return res;
         })
         .catch((error) => {
@@ -199,7 +201,7 @@ const QuestionForm: React.FC = (props) => {
       <BasicModal open={modalOpen} setOpen={setModalOpen}>
         <div>
           {isLoading && <h3>Loading</h3>}
-          {!isLoading && isSubmitSuccessful && (
+          {!isLoading && !errorMessage && (
             <div
               style={{
                 padding: "0",
@@ -211,14 +213,14 @@ const QuestionForm: React.FC = (props) => {
               }}
             >
               <h3>Successfully Posted!</h3>
-              <Button>
+              {/* <Button>
                 <Link
                   style={{ textDecoration: "none", color: "white" }}
                   href="/"
                 >
                   go to main
                 </Link>
-              </Button>
+              </Button> */}
             </div>
           )}
           {errorMessage && (
