@@ -52,33 +52,63 @@ const AnswerForm: React.FC<{
     const postAnswer = async (data: FormValues) => {
       const payLoad = { ...data, questionId: props.questionId };
       console.log(payLoad);
-      await axios
-        .post(link, payLoad)
-        .then((res) => {
-          if (props?.default) {
-            props.setDefaultValue(null);
-          }
-          return res;
-        })
-        .then((res) => {
-          console.log(res);
-          resetField("content");
-          resetField("nickname");
-          resetField("password");
-          props.setAnswerID(0);
-          setIsLoading(false);
-        })
-        .then(() => {
-          props.setReload(true);
-        })
-        .catch((error) => {
-          console.log(error);
-          if (error?.response?.data?.message) {
-            setErrorMessage(error?.response?.data?.message);
-          }
-          setHasError(true);
-          setIsLoading(false);
-        });
+      if (!props.answerID) {
+        await axios
+          .post(link, payLoad)
+          .then((res) => {
+            if (props?.default) {
+              props.setDefaultValue(null);
+            }
+            return res;
+          })
+          .then((res) => {
+            console.log(res);
+            resetField("content");
+            resetField("nickname");
+            resetField("password");
+            props.setAnswerID(0);
+            setIsLoading(false);
+          })
+          .then(() => {
+            props.setReload(true);
+          })
+          .catch((error) => {
+            console.log(error);
+            if (error?.response?.data?.message) {
+              setErrorMessage(error?.response?.data?.message);
+            }
+            setHasError(true);
+            setIsLoading(false);
+          });
+      } else {
+        await axios
+          .put(link, payLoad)
+          .then((res) => {
+            if (props?.default) {
+              props.setDefaultValue(null);
+            }
+            return res;
+          })
+          .then((res) => {
+            console.log(res);
+            resetField("content");
+            resetField("nickname");
+            resetField("password");
+            props.setAnswerID(0);
+            setIsLoading(false);
+          })
+          .then(() => {
+            props.setReload(true);
+          })
+          .catch((error) => {
+            console.log(error);
+            if (error?.response?.data?.message) {
+              setErrorMessage(error?.response?.data?.message);
+            }
+            setHasError(true);
+            setIsLoading(false);
+          });
+      }
     };
     postAnswer(data);
   };
